@@ -2,14 +2,14 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>de.hu-berlin.jslice</groupId>
-  <artifactId>de.hu-berlin.jslice</artifactId>
+  <groupId>de.hu-berlin.slice</groupId>
+  <artifactId>de.hu-berlin.slice</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
   <packaging>pom</packaging>
 
   <modules>
-    <module>de.hu-berlin.jslice.plugin</module>
+    <module>de.hu-berlin.slice.plugin</module>
   </modules>
 
 </project>
