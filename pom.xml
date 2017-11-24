@@ -13,6 +13,7 @@
     <module>de.hu-berlin.slice.sandbox</module>
     <module>de.hu-berlin.libs</module>
     <module>de.hu-berlin.slice.libs</module>
+    <module>de.hu-berlin.slice.tests</module>
   </modules>
 
   <build>
