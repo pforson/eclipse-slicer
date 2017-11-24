@@ -48,7 +48,7 @@ class testing {
 
 		CommandLine.parse(args);
 		try {
-			doSlicing(Paths.get("resources/sandbox/HelloWorld.jar").toAbsolutePath().toString());
+			doSlicing(Paths.get("../de.hu-berlin.slice.tests/dat/HelloWorld.jar").toAbsolutePath().toString());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -75,7 +75,7 @@ class testing {
 //		ClassLoader cl = ClassLoader.getSystemClassLoader();
 //		AnalysisScope scope = AnalysisScopeReader.readJavaScope("scope.txt",new File("exclusions.txt") , cl);
 
-		String exclusionpath = Paths.get("resources/sandbox/exclusion.txt").toAbsolutePath().toString();
+		String exclusionpath = Paths.get("../de.hu-berlin.slice.tests/dat/Java60RegressionExclusions.txt").toAbsolutePath().toString();
 		AnalysisScope scope = AnalysisScopeReader.makeJavaBinaryAnalysisScope(appJar, new File(exclusionpath));
 				System.out.println("cha");
 		ClassHierarchy cha = ClassHierarchyFactory.make(scope);

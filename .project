@@ -3,6 +3,10 @@
 	<name>de.hu-berlin.slice</name>
 	<comment></comment>
 	<projects>
+		<project>de.hu-berlin.slice.libs</project>
+		<project>de.hu-berlin.slice.plugin</project>
+		<project>de.hu-berlin.slice.sandbox</project>
+		<project>de.hu-berlin.slice.tests</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -9,11 +9,10 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>de.hu-berlin.slice.plugin</module>
-    <module>de.hu-berlin.slice.sandbox</module>
-    <module>de.hu-berlin.libs</module>
     <module>de.hu-berlin.slice.libs</module>
     <module>de.hu-berlin.slice.tests</module>
+    <module>de.hu-berlin.slice.plugin</module>
+    <module>de.hu-berlin.slice.sandbox</module>
   </modules>
 
   <build>
