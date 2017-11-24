@@ -51,7 +51,7 @@
                id="de.hu_berlin.slice.toolbars.sampleToolbar">
             <command
                   commandId="de.hu_berlin.slice.commands.sampleCommand"
-                  icon="icons/sample.png"
+                  icon="icons/logo.png"
                   tooltip="Say hello world"
                   id="de.hu_berlin.slice.toolbars.sampleCommand">
             </command>
