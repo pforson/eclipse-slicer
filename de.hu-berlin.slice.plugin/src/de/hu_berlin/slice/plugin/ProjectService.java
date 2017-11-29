@@ -3,6 +3,8 @@ package de.hu_berlin.slice.plugin;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Singleton;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -14,6 +16,7 @@ import org.eclipse.jdt.core.JavaModelException;
 /**
  * @author IShowerNaked
  */
+@Singleton
 public class ProjectService {
 
     public List<String> resolveClassPathList(IJavaProject javaProject) throws JavaModelException {
