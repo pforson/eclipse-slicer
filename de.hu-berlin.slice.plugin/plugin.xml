@@ -59,4 +59,31 @@
       </menuContribution>
    </extension>
 
+   <!-- Debug-View for easier Plugin-Development :-) -->
+   <extension point="org.eclipse.ui.views">
+
+      <category name="Java" id="de.hu_berlin.slice.plugin.view.SliceView"></category>
+
+      <view name="Slice View"
+            inject="true"
+            icon="icons/logo.png"
+            category="de.hu_berlin.slice.plugin.view.SliceView"
+            class="de.hu_berlin.slice.plugin.view.SliceView"
+            id="de.hu_berlin.slice.plugin.view.SliceView">
+      </view>
+
+   </extension>
+
+   <extension point="org.eclipse.ui.perspectiveExtensions">
+
+      <perspectiveExtension targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view ratio="0.5"
+               relative="org.eclipse.ui.views.ProblemView"
+               relationship="right"
+               id="de.hu_berlin.slice.plugin.view.SliceView">
+         </view>
+      </perspectiveExtension>
+
+   </extension>
+
 </plugin>

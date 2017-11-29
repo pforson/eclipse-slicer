@@ -11,16 +11,42 @@
   <artifactId>de.hu-berlin.slice.libs</artifactId>
 
   <dependencies>
+
+    <dependency>
+        <groupId>com.google.inject</groupId>
+        <artifactId>guice</artifactId>
+        <version>4.1.0</version>
+    </dependency>
+
     <dependency>
         <groupId>com.ibm.wala</groupId>
         <artifactId>com.ibm.wala.core</artifactId>
         <version>1.4.3</version>
     </dependency>
     <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.12</version>
+      <groupId>com.ibm.wala</groupId>
+      <artifactId>com.ibm.wala.cast.java</artifactId>
+      <version>1.4.3</version>
     </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.25</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.7.25</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
 </project>
