@@ -13,63 +13,63 @@ import org.eclipse.jdt.core.JavaModelException;
  */
 public class JavaProjectContextFactory {
 
-	public class JavaProjectContext {
+    public class JavaProjectContext {
 
-		IJavaProject javaProject;
+        IJavaProject javaProject;
 
-		public IJavaProject getJavaProject() {
-			return javaProject;
-		}
-	}
+        public IJavaProject getJavaProject() {
+            return javaProject;
+        }
+    }
 
-	public class JavaProjectContextFactoryException extends Exception {
+    public class JavaProjectContextFactoryException extends Exception {
 
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-		public JavaProjectContextFactoryException(String msg, Exception e) {
-			super(msg, e);
-		}
-	}
+        public JavaProjectContextFactoryException(String msg, Exception e) {
+            super(msg, e);
+        }
+    }
 
-	public JavaProjectContext create(ICompilationUnit compilationUnit) throws JavaProjectContextFactoryException {
+    public JavaProjectContext create(ICompilationUnit compilationUnit) throws JavaProjectContextFactoryException {
 
-		IResource correspondingResource = null;
-		try {
-			correspondingResource = compilationUnit.getCorrespondingResource();
-		}
-		catch (JavaModelException e) {
-			throw new JavaProjectContextFactoryException("Compilation unit does not belong to any IResource object.", e);
-		}
+        IResource correspondingResource = null;
+        try {
+            correspondingResource = compilationUnit.getCorrespondingResource();
+        }
+        catch (JavaModelException e) {
+            throw new JavaProjectContextFactoryException("Compilation unit does not belong to any IResource object.", e);
+        }
 
-		IProject project = correspondingResource.getProject();
+        IProject project = correspondingResource.getProject();
 
-		return create(project);
-	}
+        return create(project);
+    }
 
-	public JavaProjectContext create(IProject project) throws JavaProjectContextFactoryException {
+    public JavaProjectContext create(IProject project) throws JavaProjectContextFactoryException {
 
-		try {
-			if (! project.hasNature(JavaCore.NATURE_ID)) {
-				throw new JavaProjectContextFactoryException("The given project is not a Java project.", null);
-			}
-		}
-		catch (CoreException e) {
-			throw new JavaProjectContextFactoryException(null, e);
-		}
+        try {
+            if (! project.hasNature(JavaCore.NATURE_ID)) {
+                throw new JavaProjectContextFactoryException("The given project is not a Java project.", null);
+            }
+        }
+        catch (CoreException e) {
+            throw new JavaProjectContextFactoryException(null, e);
+        }
 
-		IJavaProject javaProject = JavaCore.create(project);
-		return create(javaProject);
-	}
+        IJavaProject javaProject = JavaCore.create(project);
+        return create(javaProject);
+    }
 
-	public JavaProjectContext create(IJavaProject javaProject) {
+    public JavaProjectContext create(IJavaProject javaProject) {
 
-		// ----------------------------------
-		// -- Build and return the context --
-		// ----------------------------------
+        // ----------------------------------
+        // -- Build and return the context --
+        // ----------------------------------
 
-		JavaProjectContext context = new JavaProjectContext();
-		context.javaProject = javaProject;
+        JavaProjectContext context = new JavaProjectContext();
+        context.javaProject = javaProject;
 
-		return context;
-	}
+        return context;
+    }
 }

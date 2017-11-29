@@ -13,20 +13,20 @@ import de.hu_berlin.slice.Activator;
  */
 public class PluginImages
 {
-	public static final String PATH_TO_ICONS = "icons/";
+    public static final String PATH_TO_ICONS = "icons/";
 
-	public static final ImageDescriptor DESC_CLEAR        = createImageDescriptor("clear.png");
-	public static final ImageDescriptor DESC_RUN_BACKWARD = createImageDescriptor("run_backward.png");
-	public static final ImageDescriptor DESC_RUN_FORWARD  = createImageDescriptor("run_forward.png");
-	public static final ImageDescriptor DESC_UPDATE       = createImageDescriptor("update.png");
+    public static final ImageDescriptor DESC_CLEAR        = createImageDescriptor("clear.png");
+    public static final ImageDescriptor DESC_RUN_BACKWARD = createImageDescriptor("run_backward.png");
+    public static final ImageDescriptor DESC_RUN_FORWARD  = createImageDescriptor("run_forward.png");
+    public static final ImageDescriptor DESC_UPDATE       = createImageDescriptor("update.png");
 
-	//
-	// Utility methods.
-	//
+    //
+    // Utility methods.
+    //
 
-	private static ImageDescriptor createImageDescriptor(String fileName) {
-		String path = PATH_TO_ICONS + fileName;
-		URL fileURL = FileLocator.find(Activator.getDefault().getBundle(), new Path(path), null);
-		return ImageDescriptor.createFromURL(fileURL);
-	}
+    private static ImageDescriptor createImageDescriptor(String fileName) {
+        String path = PATH_TO_ICONS + fileName;
+        URL fileURL = FileLocator.find(Activator.getDefault().getBundle(), new Path(path), null);
+        return ImageDescriptor.createFromURL(fileURL);
+    }
 }

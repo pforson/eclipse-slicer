@@ -15,11 +15,11 @@ import de.hu_berlin.slice.Activator;
  */
 public class BundleService {
 
-	public File getFileByPath(String path) throws URISyntaxException, IOException {
+    public File getFileByPath(String path) throws URISyntaxException, IOException {
 
-		Bundle bundle = Activator.getDefault().getBundle();
-		URL exclusionsURL = bundle.getEntry("dat/Java60RegressionExclusions.txt");
+        Bundle bundle = Activator.getDefault().getBundle();
+        URL exclusionsURL = bundle.getEntry("dat/Java60RegressionExclusions.txt");
 
-		return new File(FileLocator.resolve(exclusionsURL).toURI());
-	}
+        return new File(FileLocator.resolve(exclusionsURL).toURI());
+    }
 }

@@ -16,16 +16,16 @@ import com.ibm.wala.ipa.callgraph.AnalysisScope;
  */
 public class SampleHandler extends AbstractHandler {
 
-	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
+    @Override
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+        IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 
-		AnalysisScope scope = AnalysisScope.createJavaAnalysisScope();
+        AnalysisScope scope = AnalysisScope.createJavaAnalysisScope();
 
-		MessageDialog.openInformation(
-				window.getShell(),
-				"Slice",
-				"Hello, Eclipse world" + " ~> " + scope.getLanguages());
-		return null;
-	}
+        MessageDialog.openInformation(
+                window.getShell(),
+                "Slice",
+                "Hello, Eclipse world" + " ~> " + scope.getLanguages());
+        return null;
+    }
 }
