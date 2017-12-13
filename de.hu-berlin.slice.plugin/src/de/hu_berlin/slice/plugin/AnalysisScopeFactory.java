@@ -30,10 +30,11 @@ public class AnalysisScopeFactory {
     @Inject
     LibraryClasspathResolver libraryClasspathResolver;
 
+    public final static String SYNTHETIC_J2SE_MODEL = "dat/SyntheticJ2SEModel.txt";
+
     public AnalysisScope create(IJavaProject javaProject, File exclusionsFile) throws Exception {
 
-        String scopeFileName = "dat/SyntheticJ2SEModel.txt";
-        AnalysisScope analysisScope = AnalysisScopeReader.readJavaScope(scopeFileName, exclusionsFile, this.getClass().getClassLoader());
+        AnalysisScope analysisScope = AnalysisScopeReader.readJavaScope(SYNTHETIC_J2SE_MODEL, exclusionsFile, this.getClass().getClassLoader());
 
         Map<ClasspathLoader, List<Module>> modules = getModules(javaProject);
         for (ClasspathLoader classpathLoader : modules.keySet()) {
@@ -50,7 +51,7 @@ public class AnalysisScopeFactory {
         IClasspathEntry[] classPathEntries = javaProject.getResolvedClasspath(true);
 
         ClasspathScope classpathScope = new ClasspathScope(javaProject);
-        classpathScope.setIncludeSource(false);
+        classpathScope.setIncludeSource(false); // TODO: This must be made available as a UI option
 
         Map<ClasspathLoader, List<Module>> modules = new HashMap<>();
         for (ClasspathLoader classpathLoader : ClasspathLoader.values()) {
