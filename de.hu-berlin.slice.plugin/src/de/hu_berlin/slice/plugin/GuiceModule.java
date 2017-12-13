@@ -5,6 +5,8 @@ import com.google.inject.AbstractModule;
 import de.hu_berlin.slice.ast.ASTService;
 import de.hu_berlin.slice.plugin.context.EditorContextFactory;
 import de.hu_berlin.slice.plugin.context.JavaProjectContextFactory;
+import de.hu_berlin.slice.plugin.eclipse.classpath.LibraryClasspathResolver;
+import de.hu_berlin.slice.plugin.eclipse.classpath.SourceClasspathResolver;
 
 /**
  * @author IShowerNaked
@@ -20,5 +22,10 @@ public class GuiceModule extends AbstractModule {
         this.bind(EditorContextFactory.class);
         this.bind(JavaProjectContextFactory.class);
         this.bind(ProjectService.class);
+        this.bind(WorkspaceService.class);
+
+        this.bind(SourceClasspathResolver.class);
+        this.bind(LibraryClasspathResolver.class);
+        this.bind(AnalysisScopeFactory.class);
     }
 }
