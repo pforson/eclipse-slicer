@@ -81,17 +81,13 @@ public class EntrypointLocatorTask implements ITask {
                 IR ir = cgEntryoint.getIR();
                 IBytecodeMethod cgBytecodeEntryoint = (IBytecodeMethod)ir.getMethod();
                 IInstruction[] instructions = cgBytecodeEntryoint.getInstructions();
+                System.err.println(cgEntryoint.getMethod().toString());
                 for (int i = 0; i < instructions.length; ++i) {
                     int bcIndex = cgBytecodeEntryoint.getInstructionIndex(i);
-                 // System.err.println("instr: " + bcIndex + " --- " + instructions[i]);
+                    System.err.println("instr: " + bcIndex + " --- " + ((-1 != bcIndex) ? cgBytecodeEntryoint.getLineNumber(bcIndex) : "?") + " --- " + instructions[i]);
                     if (-1 != bcIndex) {
-                        // int lineNumber = cgBytecodeEntryoint.getLineNmuber(bcIndex);
-
-                     // System.err.println(cgBytecodeEntryoint.getSourcePosition(bcIndex));
-                        // System.err.println(lineNumber);
                     }
                 }
-                // System.err.println(cgEntryoint.getMethod().toString());
             }
 
             System.err.println(callGraph.getNode(0).toString());
