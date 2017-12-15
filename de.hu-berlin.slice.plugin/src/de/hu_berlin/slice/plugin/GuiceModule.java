@@ -7,6 +7,7 @@ import de.hu_berlin.slice.plugin.context.EditorContextFactory;
 import de.hu_berlin.slice.plugin.context.JavaProjectContextFactory;
 import de.hu_berlin.slice.plugin.eclipse.classpath.LibraryClasspathResolver;
 import de.hu_berlin.slice.plugin.eclipse.classpath.SourceClasspathResolver;
+import de.hu_berlin.slice.plugin.jobs.JobFactory;
 
 /**
  * @author IShowerNaked
@@ -16,16 +17,18 @@ public class GuiceModule extends AbstractModule {
     @Override
     protected void configure() {
 
-        this.bind(ASTService.class);
-        this.bind(BundleService.class);
-        this.bind(EclipseService.class);
-        this.bind(EditorContextFactory.class);
-        this.bind(JavaProjectContextFactory.class);
-        this.bind(ProjectService.class);
-        this.bind(WorkspaceService.class);
+        bind(ASTService.class);
+        bind(BundleService.class);
+        bind(EclipseService.class);
+        bind(EditorContextFactory.class);
+        bind(JavaProjectContextFactory.class);
+        bind(ProjectService.class);
+        bind(WorkspaceService.class);
 
-        this.bind(SourceClasspathResolver.class);
-        this.bind(LibraryClasspathResolver.class);
-        this.bind(AnalysisScopeFactory.class);
+        bind(SourceClasspathResolver.class);
+        bind(LibraryClasspathResolver.class);
+        bind(AnalysisScopeFactory.class);
+
+        bind(JobFactory.class);
     }
 }

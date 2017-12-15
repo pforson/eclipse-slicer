@@ -1,14 +1,15 @@
 package de.hu_berlin.slice.plugin.view;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Statement;
@@ -32,10 +33,6 @@ import org.eclipse.ui.part.ViewPart;
 import com.google.common.base.Throwables;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.ibm.wala.ipa.callgraph.AnalysisScope;
-import com.ibm.wala.ipa.callgraph.Entrypoint;
-import com.ibm.wala.ipa.cha.ClassHierarchy;
-import com.ibm.wala.ipa.cha.ClassHierarchyFactory;
 
 import de.hu_berlin.slice.ast.ASTService;
 import de.hu_berlin.slice.plugin.AnalysisScopeFactory;
@@ -46,6 +43,8 @@ import de.hu_berlin.slice.plugin.ProjectService;
 import de.hu_berlin.slice.plugin.WorkspaceService;
 import de.hu_berlin.slice.plugin.context.EditorContextFactory;
 import de.hu_berlin.slice.plugin.context.EditorContextFactory.EditorContext;
+import de.hu_berlin.slice.plugin.jobs.JobFactory;
+import de.hu_berlin.slice.plugin.jobs.SlicingContext;
 
 /**
  * Slice View
@@ -72,6 +71,7 @@ public class SliceView extends ViewPart {
     ProjectService       projectService       = injector.getInstance(ProjectService.class);
     WorkspaceService     workspaceService     = injector.getInstance(WorkspaceService.class);
     AnalysisScopeFactory analysisScopeFactory = injector.getInstance(AnalysisScopeFactory.class);
+    JobFactory           jobFactory           = injector.getInstance(JobFactory.class);
 
     // -------------------
     // -- UI stuff here --
@@ -168,7 +168,12 @@ public class SliceView extends ViewPart {
         //
         // Action to perform forward slice
         //
-        sliceForwardAction = createPlaceholderAction("Slice forward button clicked!");
+        sliceForwardAction = new Action() {
+            @Override
+            public void run() {
+                jobDemo(); // demo
+            }
+        };
         sliceForwardAction.setText("Slice forward");
         sliceForwardAction.setToolTipText("Performs a forward slice.");
         sliceForwardAction.setImageDescriptor(PluginImages.DESC_RUN_FORWARD);
@@ -177,6 +182,11 @@ public class SliceView extends ViewPart {
     //
     // Action implementations.
     //
+
+    private void jobDemo() {
+//        Job job = Job.create("ok", new CompilationJob());
+//        job.schedule();
+    }
 
     /**
      * Demo, wrong place :)
@@ -206,33 +216,36 @@ public class SliceView extends ViewPart {
             out.add("Statement length: "                 + statementNode.getLength());
             out.add("Method this statement belongs to: " + methodDeclaration.toString());
 
-            //
-            //
-            //
-            try {
-                List<String> classPathList = projectService.resolveClassPathList(javaProject);
+            SlicingContext slicingContext = new SlicingContext(editorContext);
 
-                String classPath = String.join(File.pathSeparator, classPathList);
-                out.add("Project class paths: " + classPath);
-
-                File exclusionsFile = bundleService.getFileByPath("dat/Java60RegressionExclusions.txt");
-                out.add("Exclusions file '" + exclusionsFile.getName() + "' loaded from bundle.");
-
-                AnalysisScope analysisScope = analysisScopeFactory.create(javaProject, exclusionsFile);
-
-                ClassHierarchy classHierarchy = ClassHierarchyFactory.make(analysisScope);
-
-                // "LMainlol"
-                Iterable<Entrypoint> entrypoints = com.ibm.wala.ipa.callgraph.impl.Util.makeMainEntrypoints(analysisScope, classHierarchy);
-                for (Entrypoint ep : entrypoints) {
-                    out.add("entrypoint: " + ep.getMethod().getSignature());
+            Job mainJob = jobFactory.create(slicingContext);
+            mainJob.addJobChangeListener(new JobChangeAdapter() {
+                @Override
+                public void done(IJobChangeEvent event) {
+                    // System.err.println(slicingContext.getClassHierarchy().toString());
                 }
+            });
+            mainJob.schedule();
 
-                out.add(classHierarchy.toString());
-            }
-            catch (JavaModelException e) {
-                out.add("Unable to resolve class paths.");
-            }
+//                // "LMainlol"
+//                Iterable<Entrypoint> entrypoints = com.ibm.wala.ipa.callgraph.impl.Util.makeMainEntrypoints(analysisScope, classHierarchy);
+//
+//                Entrypoint demoEntrypoint = null;
+//                for (Entrypoint ep : entrypoints) {
+//                    demoEntrypoint = ep;
+//                    out.add("entrypoint: " + ep.getMethod().getSignature());
+//                    break;
+//                }
+//
+//                if (null == demoEntrypoint) {
+//                    throw new Exception("Could not determine entry point.");
+//                }
+//
+//                Set<IMethod> possibleTargets = classHierarchy.getPossibleTargets(demoEntrypoint.getMethod().getReference());
+//                out.add("Possible targets:");
+//                possibleTargets.forEach(method -> out.add(method.getName().toString()));
+//
+//                out.add(classHierarchy.toString());
         }
         catch (Exception e) {
             out.add("-- An error occured! --\n");
