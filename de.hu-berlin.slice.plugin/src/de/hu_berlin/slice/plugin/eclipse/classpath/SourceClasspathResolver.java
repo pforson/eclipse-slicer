@@ -1,5 +1,6 @@
 package de.hu_berlin.slice.plugin.eclipse.classpath;
 
+import java.io.File;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -36,9 +37,8 @@ public class SourceClasspathResolver implements IClasspathResolver {
 
     private Map.Entry<ClasspathLoader, Module> resolveForSource(ClasspathScope scope, IClasspathEntry classpathEntry) {
 
-        // IPath[] exclusionPatterns = classpathEntry.getExclusionPatterns();
-
-        Module module = new SourceDirectoryTreeModule(workspaceService.getAbsolutePath(classpathEntry.getPath()).toFile());
+        File srcDirectory = workspaceService.getAbsolutePath(classpathEntry.getPath()).toFile();
+        Module module = new SourceDirectoryTreeModule(srcDirectory);
 
         return Maps.immutableEntry(ClasspathLoader.SOURCE, module);
     }

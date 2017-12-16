@@ -25,8 +25,9 @@ import com.ibm.wala.ipa.callgraph.propagation.PointerAnalysis;
 import com.ibm.wala.ipa.callgraph.propagation.cfa.ZeroXCFABuilder;
 import com.ibm.wala.ipa.callgraph.propagation.cfa.ZeroXInstanceKeys;
 import com.ibm.wala.ipa.cha.ClassHierarchy;
-import com.ibm.wala.shrikeBT.IInstruction;
 import com.ibm.wala.ssa.IR;
+import com.ibm.wala.ssa.SSABinaryOpInstruction;
+import com.ibm.wala.ssa.SSAInstruction;
 import com.ibm.wala.types.ClassLoaderReference;
 
 import de.hu_berlin.slice.plugin.context.EditorContextFactory.EditorContext;
@@ -48,6 +49,12 @@ public class EntrypointLocatorTask implements ITask {
             String           absolutePath    = compilationUnit.getCorrespondingResource().getLocation().toOSString();
 
             ClassHierarchy classHierarchy = context.classHierarchy;
+
+            // System.err.println(classHierarchy.toString());
+
+            for (IClassLoader cl : classHierarchy.getLoaders()) {
+                System.err.println(cl.getClass().getName());
+            }
             IClassLoader classLoader = classHierarchy.getLoader(ClassLoaderReference.Application);
 
             List<Entrypoint> entrypoints = new ArrayList<>();
@@ -70,37 +77,42 @@ public class EntrypointLocatorTask implements ITask {
 
             CallGraphBuilder<InstanceKey> callGraphBuilder = ZeroXCFABuilder.make(classHierarchy, options, new AnalysisCacheImpl(), null, null, ZeroXInstanceKeys.ALLOCATIONS | ZeroXInstanceKeys.CONSTANT_SPECIFIC);
 
+            // AstJavaCFABuilder callGraphBuilder = new AstJavaCFABuilder(classHierarchy, options, new AnalysisCacheImpl());
+
             CallGraph callGraph = callGraphBuilder.makeCallGraph(options, null);
 
             PointerAnalysis<InstanceKey> pointerAnalysis = callGraphBuilder.getPointerAnalysis();
 
-//            for (CGNode cgEntryoint : callGraph.getEntrypointNodes()) {
-//            }
-
             for (CGNode cgEntryoint : callGraph.getEntrypointNodes()) {
                 IR ir = cgEntryoint.getIR();
                 IBytecodeMethod cgBytecodeEntryoint = (IBytecodeMethod)ir.getMethod();
-                IInstruction[] instructions = cgBytecodeEntryoint.getInstructions();
+
                 System.err.println(cgEntryoint.getMethod().toString());
-                for (int i = 0; i < instructions.length; ++i) {
-                    int bcIndex = cgBytecodeEntryoint.getInstructionIndex(i);
-                    System.err.println("instr: " + bcIndex + " --- " + ((-1 != bcIndex) ? cgBytecodeEntryoint.getLineNumber(bcIndex) : "?") + " --- " + instructions[i]);
-                    if (-1 != bcIndex) {
+
+                int ssaInstructionIndex = -1;
+                for (Iterator<SSAInstruction> iter = ir.iterateAllInstructions(); iter.hasNext();) {
+
+                    SSAInstruction ssaInstruction = iter.next();
+                    int bcIndex = cgBytecodeEntryoint.getBytecodeIndex(++ssaInstructionIndex);
+
+                    if (-1 == bcIndex) {
+                        System.err.println("Na, damn it!");
+                    }
+                    else {
+                        System.err.println(String.format("Instruction Index: %d, Line number: %d, Instruction: %s", bcIndex, cgBytecodeEntryoint.getLineNumber(bcIndex), ssaInstruction.toString()));
+                    }
+
+                    // this demo shows how Wala aggregates multiple source lines into one SSAInstruction
+                    if (ssaInstruction instanceof SSABinaryOpInstruction) {
+                        SSABinaryOpInstruction test = (SSABinaryOpInstruction)ssaInstruction;
+                        System.err.println("- Operator: " + test.getOperator());
                     }
                 }
             }
-
-            System.err.println(callGraph.getNode(0).toString());
-
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new TaskException(null, e);
         }
-
-       // Java2IRTranslator<JdtPosition> jdt2cast = makeCAstTranslator(ast, compilationUnit., source.getUnderlyingResource().getLocation().toOSString());
-
-        // Entrypoint entrypoint = new DefaultEntrypoint(null, context.classHierarchy);
-
-        // context.classHierarchy
 
         monitor.done();
     }
